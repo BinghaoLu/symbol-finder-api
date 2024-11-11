@@ -12,7 +12,7 @@ app = FastAPI()
 
 class SymbolFinder:
     def extract_crypto_exchange(self, input_file='unique_symbols.csv', output_parquet: str = 'output.parquet'):
-        data_list = pd.read_csv(input_file)[:2]
+        data_list = pd.read_csv(input_file)#[:2]
         result = self.parallel_process(data_list)
         result.to_parquet(output_parquet, index=False)
         return {"status": "Exchange data extracted and saved to parquet."}
