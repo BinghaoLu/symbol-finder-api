@@ -116,3 +116,12 @@ def extract_crypto_exchange():
         return FileResponse(path='unique_symbols.csv', filename="output.parquet", media_type="application/octet-stream")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "symbolfinder-fastapi:app", host="0.0.0.0", port=8018, log_level="info", workers=4
+    )
