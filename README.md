@@ -9,8 +9,7 @@ A FastAPI-based application for querying and retrieving cryptocurrency trading v
 uvicorn main:app --reload
 ```
 
-## To run the code:
-In the webbrowser, open 
+## In the webbrowser, open 
 ```
 http://127.0.0.1:8000/docs
 ```
