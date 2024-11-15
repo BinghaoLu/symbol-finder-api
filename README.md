@@ -6,7 +6,7 @@ A FastAPI-based application for querying and retrieving cryptocurrency trading v
 ## To run the code:
 
 ```bash
-uvicorn main:app --reload
+python main.py
 ```
 
 ## In the webbrowser, open 
