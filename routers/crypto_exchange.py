@@ -13,7 +13,7 @@ def get_symbol_finder(request: Request):
 router = APIRouter()
 
 
-@router.get("/extract_crypto_exchange/",
+@router.get("/",
          summary='Extracts exchange data from a unique symbol CSV file, processes it, and saves the result as a Parquet file.',
          tags=['extract_crypto_exchange'])
 def extract_crypto_exchange(

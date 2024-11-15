@@ -24,8 +24,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Modular FastAPI App", lifespan=lifespan)
 
 # Include routers
-app.include_router(trading_view.router, prefix="/trading_view", tags=["Trading View"])
-app.include_router(crypto_exchange.router, prefix="/crypto_exchange", tags=["Crypto Exchange"])
+app.include_router(trading_view.router, prefix="/trading_view", tags=["extract tradingview url"])
+app.include_router(crypto_exchange.router, prefix="/crypto_exchange", tags=["extract_crypto_exchange"])
 
 if __name__ == "__main__":
     import uvicorn

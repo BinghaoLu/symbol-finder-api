@@ -13,7 +13,7 @@ def get_symbol_finder(request: Request):
 
 
 
-@router.get("/extract_tv_url/", 
+@router.get("/", 
          summary ='Extracts trading URLs for a specified base and quote currency pair.',
          tags=['extract tradingview url'])
 def extract_tv_url(
