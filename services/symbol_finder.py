@@ -1,14 +1,11 @@
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 import multiprocessing as mp
 import pandas as pd
 import requests
 import difflib
 import time
+from fastapi import HTTPException
 
-app = FastAPI()
 
 class SymbolFinder:
     def extract_crypto_exchange(self, input_file='unique_symbols.csv', output_parquet: str = 'output.parquet'):
@@ -90,7 +87,7 @@ class SymbolFinder:
     def determine_exchange(self, df_cleaned, BASE='BTC', QUOTE=None):
         BASE = BASE.upper()
         if BASE not in df_cleaned['Base'].values:
-            return {'message': 'No matches for the base currency!'}
+            raise ValueError(f"No matches for the base currency '{BASE}'")
         df_filtered = df_cleaned[df_cleaned['Base'] == BASE]
         if QUOTE is None:
             return self.determine_exchange(df_cleaned, BASE, QUOTE='USD')
@@ -100,28 +97,3 @@ class SymbolFinder:
             most_similar_QUOTE = max(df_filtered['currency_code'].values, key=lambda x: difflib.SequenceMatcher(None, QUOTE, x).ratio())
             return self.determine_exchange(df_cleaned, BASE, most_similar_QUOTE)
 
-symbol_finder = SymbolFinder()
-
-@app.get("/extract_tv_url/")
-def extract_tv_url(BASE: str = 'BTC', QUOTE: Optional[str] = None):
-    try:
-        return symbol_finder.extract_tv_url(BASE=BASE, QUOTE=QUOTE)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/extract_crypto_exchange/")
-def extract_crypto_exchange():
-    try:
-        file_path = symbol_finder.extract_crypto_exchange()
-        return FileResponse(path='unique_symbols.csv', filename="output.parquet", media_type="application/octet-stream")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        "symbolfinder-fastapi:app", host="0.0.0.0", port=8018, log_level="info", workers=4
-    )
